@@ -118,6 +118,9 @@ def get_closest_correct_court(court_json: list[dict], court_type) -> dict:
 
 
 def combine_person_with_court(person: dict, correct_court: dict) -> dict:
+    '''Combines a person with their closest court and returns this in
+    one dict
+    '''
     person["nearest_court_of_right_type"] = correct_court["name"]
     if correct_court["dx_number"] is not None:
         person["dx_number"] = correct_court["dx_number"]
@@ -126,20 +129,20 @@ def combine_person_with_court(person: dict, correct_court: dict) -> dict:
 
 
 def find_correct_courts_for_people(people: list[dict]) -> list[dict]:
+    '''Takes a list of people and returns the closest desired court 
+    for each of them'''
     courts_found = []
     for person in people:
         courts = get_court_api_info(person["home_postcode"])
         correct_court = get_closest_correct_court(
             courts, person["looking_for_court_type"])
         final_person = combine_person_with_court(person, correct_court)
-        courts_found.append(person)
+        courts_found.append(final_person)
     return courts_found
 
 
 if __name__ == "__main__":
     # [TODO]: write your answer here
     people_main = get_people_info("people.csv")
-    api = get_court_api_info("NP108XG")
-    print(get_closest_correct_court(api, "Crown Court"))
 
     print(find_correct_courts_for_people(people_main))
