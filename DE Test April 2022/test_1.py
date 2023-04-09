@@ -7,8 +7,9 @@
 # based on the exact row numbers you want to remove.
 def is_log_line(line):
     """Takes a log line and returns True if it is a valid log line and returns nothing
-    if it is not.
+    if it is not. change to signify start
     """
+
     return True
 
 
