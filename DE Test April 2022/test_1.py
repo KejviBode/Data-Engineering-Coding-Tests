@@ -5,11 +5,15 @@
 # There's no perfect way to do this: just decide what you think is reasonable to get
 # the test to pass. The only thing you are not allowed to do is filter out log lines
 # based on the exact row numbers you want to remove.
+MINIMUM_REQ_LOG_LEN = 20
+
+
 def is_log_line(line):
     """Takes a log line and returns True if it is a valid log line and returns nothing
     if it is not. change to signify start
     """
-
+    if len(line) < MINIMUM_REQ_LOG_LEN:
+        return False
     return True
 
 
@@ -22,7 +26,16 @@ def get_dict(line):
     """Takes a log line and returns a dict with
     `timestamp`, `log_level`, `message` keys
     """
-    pass
+    log_line_dict = {}
+    log_levels = ["INFO", "TRACE", "WARNING"]
+
+    for i in log_levels:
+        if i in line:
+            line_split = line.split(i)
+            log_line_dict["timestamp"] = line_split[0].strip()
+            log_line_dict["log_level"] = i
+            log_line_dict["message"] = line_split[1].strip()
+    return log_line_dict
 
 
 # YOU DON'T NEED TO CHANGE ANYTHING BELOW THIS LINE
@@ -44,7 +57,7 @@ if __name__ == "__main__":
     # ---- OUTPUT --- #
     # You can print out each line of the log file line by line
     # by uncommenting this code below
-    # for i, line in enumerate(log_parser("sample.log")):
+    # for i, line in enumerate(log_parser_step_1("sample.log")):
     #     print(i, line)
 
     # ---- TESTS ---- #
